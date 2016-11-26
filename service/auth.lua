@@ -46,7 +46,11 @@ end
 function cli:ping()
 	log("ping")
 end
-
+-- add 
+function cli:record(args)
+	log("record")	 
+end
+-- end add
 function auth.shakehand(fd)
 	local c = client.dispatch { fd = fd }
 	return c.userid

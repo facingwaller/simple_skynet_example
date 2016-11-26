@@ -14,6 +14,15 @@ function cli:ping()
 	
 end
 
+-- add 
+function cli:record()
+	assert(self.login)
+	log ("%s record",data.userid)
+	client.push(self, "push", { text = ("record received!"..os.date("%H%M%S")) })	-- push message to client
+	
+end
+-- end add 
+
 function cli:login()
 	assert(not self.login)
 	if data.fd then

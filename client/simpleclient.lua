@@ -26,23 +26,27 @@ end
 function event:ping( )	
 	n = 3
 	print("ping end")
-	 os.execute("sleep " .. n)	
-	message.request ("ping")
+	-- os.execute("sleep " .. n)	
+    --	message.request ("ping")
 end
-
-function event:record(req, resp)	
+-- add 
+function event:record(req )	
 	n = 3
 	print("record  ")
 	 os.execute("sleep " .. n)	
 	message.request ("record",{content= (current_userid.." record")})
 end
+-- end add 
  
 
 function event:signin(req, resp)
 	print("signin", req.userid, resp.ok)
 	if resp.ok then
-		message.request "ping"	-- should error before login
-		message.request "login"
+		-- commit
+		  message.request "ping"	-- should error before login
+		-- end commit
+		
+		 message.request "login"
 	else
 		-- signin failed, signup
 		message.request("signup", { userid = current_userid })
@@ -61,7 +65,14 @@ end
 function event:login(_, resp)
 	print("login", resp.ok)
 	if resp.ok then
+		
+		-- add test record
+		print("test record" )
+		message.request("record", { content = " content !" })
+		-- end add 
+		-- comment
 		message.request "ping"
+		-- comment end
 	else
 		error "Can't login"
 	end

@@ -29,3 +29,9 @@ login 4 {
 		ok 0 : boolean
 	}
 }
+
+record 5 {
+	request {
+		content 0 : string
+	}	 
+}
