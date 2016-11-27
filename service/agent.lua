@@ -2,10 +2,18 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
+--add total users 20161127
+--local sharedatad= require "sharedata" 
+local sharedata = require "sharedata"
+ local totalUsers = "0"
+ --sharedata.new("totalUsers",totalUsers)
+-- end add 
 
 local agent = {}
 local data = {}
 local cli = client.handler()
+ 
+
 
 function cli:ping()
 	assert(self.login)
@@ -20,6 +28,8 @@ function cli:record()
 	log ("%s record",data.userid)
 	client.push(self, "push", { text = ("record received!"..os.date("%H%M%S")) })	-- push message to client
 	
+
+	
 end
 -- end add 
 
@@ -32,7 +42,14 @@ function cli:login()
 	data.fd = self.fd
 	self.login = true
 	log("login succ %s fd=%d", data.userid, self.fd)
-	client.push(self, "push", { text = "welcome" })	-- push message to client
+	--add total users 20161127
+	 -- totalUsers = totalUsers + 1  
+	--local l_totalUsers= sharedata.query("totalUsers")
+	totalUsers = totalUsers .. "0"
+ 	--l_totalUsers=l_totalUsers.."0"
+  -- sharedatad.update("totalUsers",l_totalUsers)
+-- end add 
+	client.push(self, "push", { text = "welcome total users="..totalUsers })	-- push message to client
 	return { ok = true }
 end
 
