@@ -24,7 +24,7 @@ function client.dispatch( c )
 			return c
 		end
  --add ender 2016-11-26 []
-		 print ("invoke function name="..name)
+		 log ("invoke function name="..name)
  --end add
 		local f = handler[name]
 		if f then
@@ -52,7 +52,11 @@ end
 function client.push(c, t, data)
 	proxy.write(c.fd, sender(t, data))
 end
-
+--add 2016112802
+function client.pushbyfd(fd, t, data)
+	proxy.write(fd, sender(t, data))
+end
+--end 2016112802
 function client.init(name)
 	return function ()
 		local protoloader = skynet.uniqueservice "protoloader"

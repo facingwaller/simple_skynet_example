@@ -34,7 +34,7 @@ function event:record(req )
 	n = 3
 	print("record  ")
 	 os.execute("sleep " .. n)	
-	message.request ("record",{content= (current_userid.." record")})
+	message.request ("record",{userid=current_userid,content= ("I'm "..current_userid.." now is  "..os.date("%H%M%S"))})
 end
 -- end add 
  

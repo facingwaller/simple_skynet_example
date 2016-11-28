@@ -33,5 +33,6 @@ login 4 {
 record 5 {
 	request {
 		content 0 : string
+		userid  1 : string
 	}	 
 }
