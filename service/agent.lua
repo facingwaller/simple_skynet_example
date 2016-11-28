@@ -28,7 +28,7 @@ end
 function cli:record()
 	assert(self.login)
 	log ("%s record",data.userid)
-	 totalUsers=totalUsers+1
+	 
 	client.push(self, "push", { text = ("record received!".."   "..totalUsers) })	-- push message to client
 	
 
