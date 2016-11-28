@@ -2,12 +2,14 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
---add total users 20161127
+--add [total users] 20161127
 --local sharedatad= require "sharedata" 
-local sharedata = require "sharedata"
- local totalUsers = "0"
+--local sharedata = require "sharedata"
+ 
+ --local totalUsers = totalUsers
  --sharedata.new("totalUsers",totalUsers)
--- end add 
+	totalUsers=0 
+-- end add [total users] 20161127
 
 local agent = {}
 local data = {}
@@ -26,18 +28,21 @@ end
 function cli:record()
 	assert(self.login)
 	log ("%s record",data.userid)
-	client.push(self, "push", { text = ("record received!"..os.date("%H%M%S")) })	-- push message to client
+	 totalUsers=totalUsers+1
+	client.push(self, "push", { text = ("record received!".."   "..totalUsers) })	-- push message to client
 	
 
 	
 end
 -- end add 
 
+ 
+
 function cli:login()
 	assert(not self.login)
 	if data.fd then
-		log("login fail %s fd=%d", data.userid, self.fd)
-		return { ok = false }
+		--log("login fail %s fd=%d", data.userid, self.fd) --comment 2016112701	
+		  --return { ok = false }  --comment 2016112701	
 	end
 	data.fd = self.fd
 	self.login = true
@@ -45,11 +50,15 @@ function cli:login()
 	--add total users 20161127
 	 -- totalUsers = totalUsers + 1  
 	--local l_totalUsers= sharedata.query("totalUsers")
-	totalUsers = totalUsers .. "0"
+	--totalUsers = totalUsers +1
  	--l_totalUsers=l_totalUsers.."0"
   -- sharedatad.update("totalUsers",l_totalUsers)
+  -- client.totalUsers =client.totalUsers +1
+	
+	 totalUsers=totalUsers+1
+	
 -- end add 
-	client.push(self, "push", { text = "welcome total users="..totalUsers })	-- push message to client
+	client.push(self, "push", { text = "welcome total users="..totalUsers  })	-- push message to client
 	return { ok = true }
 end
 
@@ -79,11 +88,12 @@ function agent.assign(fd, userid)
 	if data.userid == nil then
 		data.userid = userid
 	end
-	assert(data.userid == userid)
+	--assert(data.userid == userid)-- comment 2016112701	 assert the same user
 	skynet.fork(new_user, fd)
 	return true
 end
-
+  
+ 
 service.init {
 	command = agent,
 	info = data,
@@ -92,4 +102,6 @@ service.init {
 	},
 	init = client.init "proto",
 }
+ 
+   
 
