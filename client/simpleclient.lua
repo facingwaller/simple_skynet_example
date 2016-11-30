@@ -49,7 +49,7 @@ function event:signin(req, resp)
 		 message.request "login"
 	else
 		-- signin failed, signup
-		message.request("signup", { userid = current_userid })
+		message.request("signup", { userid = current_userid,pwd= current_userid})
 	end
 end
 
@@ -82,7 +82,7 @@ function event:push(args)
 	print("server push", args.text)
 end
 
-message.request("signin", { userid =current_userid})
+message.request("signin", { userid =current_userid,pwd=current_userid})
 
 while true do
 	message.update()

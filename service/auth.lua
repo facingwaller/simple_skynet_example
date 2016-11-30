@@ -24,7 +24,7 @@ end
 
 function cli:signin(args)
 	log("signin userid = %s", args.userid)
-	if users[args.userid] then
+	if args.userid == args.pwd then
 		self.userid = args.userid
 		self.exit = true
  
@@ -52,3 +52,30 @@ service.init {
 	info = users,
 	init = client.init "proto",
 }
+
+-- add 2016113001
+--drawconfig drawconfig/%s wait to put it into a common helper moudle
+ function loadconfig(name)
+	local file = io.open(name)
+	io.close()
+	local kvs={}
+	for line in file:lines() do
+          name,pwd=  string.match(line,"(.*),(.*)")
+	 	kvs[name]=pwd
+		  --print (name.."_"..pwd)
+    --print(line) -- 这里就是每次取一行
+	end
+	return kvs
+end
+
+function printTable( tb)
+	for key,value in pairs(tb) do
+		print (key..","..value)
+	end
+end
+
+
+users={}
+users=loadconfig("account")
+printTable(users)
+--end  add 2016113001

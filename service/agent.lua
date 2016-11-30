@@ -2,6 +2,7 @@ local skynet = require "skynet"
 local service = require "service"
 local client = require "client"
 local log = require "log"
+--2016113001 lucky draw
 
 -- add 2016112802  show each user talks
 local users = {}
@@ -118,6 +119,9 @@ service.init {
 	},
 	init = client.init "proto",
 }
+
+
+
  
    
 
