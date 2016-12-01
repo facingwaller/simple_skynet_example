@@ -48,10 +48,28 @@ function cli:record(args)
 	 
 end
  
+--add 20161201
+function cli:lotterydraw( )
+	assert(self.login)
+	--log ("%s:  [fd=%s] draw ",users[self.fd],self.fd) 
+	--print ("  draw "..self.fd.." userid="..users[self.fd]) 
+	
+	--client.pushbyfd(key, "push", { text = ( args.content ) })	
+	local result=Serverlotterydraw()
+		if result then
+		print (users[self.fd].." get "..result.."  "..globalindex-1)
+		return { item = result} --return item
+		else
+		--print ("3q "..globalindex-1)
+		end	
+	return { item = "nothing" }
+	--	client.push(self, "push", { text = "welcome total users="..totalUsers  })
+end
 
+--end add 20161201
  
 
-function cli:login()
+function cli:login( )
 	assert(not self.login)
 	if data.fd then
 		--log("login fail %s fd=%d", data.userid, self.fd) --comment 2016112701	
@@ -60,6 +78,9 @@ function cli:login()
 	data.fd = self.fd
 	self.login = true
 	log("login succ %s fd=%d", data.userid, self.fd)
+	--
+	--users[self.fd]=args.
+	--
 	--add total users 20161127
 	 -- totalUsers = totalUsers + 1  
 	--local l_totalUsers= sharedata.query("totalUsers")
@@ -122,6 +143,119 @@ service.init {
 
 
 
+-- add 20161201
+function loadconfigbyformort(name,formort)
+	local file = io.open(name)
+	io.close()
+	local kvs={}
+	local item={}
+	index=0
+	for line in file:lines() do
+		itemid1,fenzi1,fenmu1=  string.match(line,"(.*),(.*),(.*)")
+		--item.itemid=itmid1
+		--item.fenzi=fenzi1
+		--item.fenmu=fenmu1
+		index=index+1
+	 	kvs[index]={itmid=itemid1,fenzi=fenzi1,fenmu=fenmu1}
+		  --print (name.."_"..pwd)
+		--print(line) -- 这里就是每次取一行
+	end
+	return kvs
+end
+
+function printTable( tb)
+	for key,value in pairs(tb) do
+		print (key..","..value)
+	end
+end
+function printTable_luckyitems( tb)
+	for key,value in pairs(tb) do
+		print (key..","..value.itmid)
+	end
+end
+
+function printTable3( tb)
+	for key,value in ipairs(tb) do
+		print (key..","..value)
+	end
+end
+
+function initluckydraws( _luckyitems)
+  --find max fenmu
+  max=0
+  for key,item in pairs(_luckyitems) do
+	 if( tonumber(item.fenmu)>max) then
+       max=tonumber(item.fenmu);
+	   end
+	end
+  --maxIndex=max
+  math.randomseed(os.time())
+    local   tb={}
+	--
+  for key,item in pairs(_luckyitems) do
+      for start=1,max,item.fenmu  do
+          repeat
+           num=math.random(start,start+item.fenmu)
+          until  tb[num]==nil
+         tb[num]=item.itmid
+      end
+	end
+	return max,tb
+end
+
+function Serverlotterydraw()
+	local 	res
+	--print (maxIndex.." "..globalindex)
+	if(maxIndex==globalindex) then
+		globalindex=1
+		maxIndex,luckydrawsitems=initluckydraws(luckyitems) --reset
+	end
+ 	 res= luckydrawsitems[globalindex]
+	globalindex=globalindex+1
+	return res
+
+
+end
+
+function test_lotterydraw()
+	for i=1,maxIndex do
+	local result=Serverlotterydraw()
+
+		if result then
+		print (result.." "..globalindex-1)
+		else
+		print ("3q "..globalindex-1)
+		end
+
+
+	end
+
+end
+--1 readconfig
+--2 init draw
+--3 print 2 test1 and 2,and assert shoulud be better
+--4 draw
+ luckydrawsitems={}
+ --luckyitems={item={ itemid ="",fenzi ="",fenmu =""}}
+luckyitems={ }
+ drawindex=0
+ 
+luckyitems=loadconfigbyformort("drawconfig/luckyitems")
+ printTable_luckyitems( luckyitems)
+
+--print ("test luckyitems-----------")
+maxIndex,luckydrawsitems=initluckydraws(luckyitems)
+
+
+
+
+ print ("test luckydrawsitems-----------")
+ printTable( luckydrawsitems)
+globalindex=0
+ -- fill in loadconfigbyformort
+--test_lotterydraw()
+
+--end add 20161201
  
    
 

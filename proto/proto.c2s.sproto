@@ -37,3 +37,12 @@ record 5 {
 		userid  1 : string
 	}	 
 }
+
+lotterydraw 6 {
+	request {
+		number 0 : integer		
+	}
+	response {
+		item 0 : string
+	}
+}

@@ -67,15 +67,4 @@ service.init {
 	end
 	return kvs
 end
-
-function printTable( tb)
-	for key,value in pairs(tb) do
-		print (key..","..value)
-	end
-end
-
-
-users={}
-users=loadconfig("account")
-printTable(users)
---end  add 2016113001
+-- end add 

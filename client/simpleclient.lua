@@ -38,7 +38,17 @@ function event:record(req )
 end
 -- end add 
  
-
+--add 20161201
+function event:lotterydraw(_, resp )	
+	if resp.item~="nothing" then
+	 print("wow ! "..resp.item )
+	end
+	n = 0.1
+	--print("lotterydraw  ")
+	 os.execute("sleep " .. n)		 
+		message.request("lotterydraw" )
+end
+--end add 20161201
 function event:signin(req, resp)
 	print("signin", req.userid, resp.ok)
 	if resp.ok then
@@ -49,7 +59,7 @@ function event:signin(req, resp)
 		 message.request "login"
 	else
 		-- signin failed, signup
-		message.request("signup", { userid = current_userid,pwd= current_userid})
+	--	message.request("signup", { userid = current_userid,pwd= current_userid})
 	end
 end
 
@@ -66,12 +76,15 @@ function event:login(_, resp)
 	print("login", resp.ok)
 	if resp.ok then
 		
+		 print("test lotterydraw" )
+		 message.request("lotterydraw")
+
 		-- add test record
-		print("test record" )
-		message.request("record", { content = " content !" })
+		--print("test drawq" )
+		--message.request("record", { content = " content !" })
 		-- end add 
 		-- comment
-		message.request "ping"
+		--message.request "ping"
 		-- comment end
 	else
 		error "Can't login"
