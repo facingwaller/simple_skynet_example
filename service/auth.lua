@@ -3,6 +3,11 @@ local service = require "service"
 local client = require "client"
 local log = require "log"
 
+
+--2016120501 add mysql to account
+local dal= require "mytestmysql"
+ 
+
 local auth = {}
 local users = {}
 local cli = client.handler()
@@ -24,7 +29,15 @@ end
 
 function cli:signin(args)
 	log("signin userid = %s", args.userid)
-	if args.userid == args.pwd then
+--add 2016120501 
+	sqlstr=" select count(*) from account where name='"..args.userid .."'  and  pwd='"..args.pwd .."' "
+	--print (sqlstr)
+	res=dal.query(sqlstr) 
+	--dal.dump(res)
+--end 2016120501
+	print ("res = "..res)
+	if res == 1 then	
+--	if args.userid == args.pwd then
 		self.userid = args.userid
 		self.exit = true
  

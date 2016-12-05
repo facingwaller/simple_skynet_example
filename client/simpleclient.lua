@@ -17,7 +17,8 @@ local event = {}
 
 message.bind({}, event)
 
-current_userid = "tester"..os.date("%H%M%S")
+--current_userid = "tester"..os.date("%H%M%S")
+current_userid = "test11"
 
 function event:__error(what, err, req, session)
 	print("error", what, err)
@@ -43,7 +44,7 @@ function event:lotterydraw(_, resp )
 	if resp.item~="nothing" then
 	 print("wow ! "..resp.item )
 	end
-	n = 0.1
+	n = 2
 	--print("lotterydraw  ")
 	 os.execute("sleep " .. n)		 
 		message.request("lotterydraw" )
